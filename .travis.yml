@@ -11,6 +11,7 @@ rvm:
 matrix:
   allow_failures:
     - rvm: rbx-2
+    - rvm: jruby-head
 gemfile:
   - Gemfile
 before_script:
