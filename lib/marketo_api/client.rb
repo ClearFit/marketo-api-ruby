@@ -21,6 +21,7 @@ class MarketoAPI::Client
     namespaces:              { 'xmlns:ns1' => 'http://www.marketo.com/mktows/' },
     pretty_print_xml:        true,
     ssl_verify_mode:         :none,
+    ssl_version:             :TLSv1,
     convert_request_keys_to: :none,
   }.freeze
   DEFAULT_CONFIG.values.each(&:freeze)
@@ -69,6 +70,7 @@ class MarketoAPI::Client
   # +ssl_verify_mode+::  How to verify SSL keys. This version defaults to
   #                      +none+. Version 1.0 will default to normal
   #                      verification.
+  # +ssl_version+::      The SSL version to use. Defaults to TLSv1.
   # +headers+::          Headers to use. Defaults to Connection: Keep-Alive.
   #                      Version 1.0 will enforce at least this value.
   #
@@ -85,8 +87,8 @@ class MarketoAPI::Client
     encryption_key = config.delete(:encryption_key)
     @auth = AuthHeader.new(user_id, encryption_key)
 
-    @wsdl = "http://app.marketo.com/soap/mktows/#{api_version}?WSDL".freeze
     @endpoint = "https://#{subdomain}.mktoapi.com/soap/mktows/#{api_version}".freeze
+    @wsdl = "#{@endpoint}?WSDL".freeze
     @savon = Savon.client(config.merge(wsdl: wsdl, endpoint: endpoint))
   end
 

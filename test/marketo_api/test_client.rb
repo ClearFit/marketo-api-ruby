@@ -18,18 +18,15 @@ class TestMarketoAPIClient < Minitest::Test
     assert_equal 'testable', setup_client(api_subdomain: 'testable').subdomain
   end
 
-  def test_wsdl
-    assert_equal "http://app.marketo.com/soap/mktows/2_3?WSDL",
-      subject.wsdl
-    assert_equal "http://app.marketo.com/soap/mktows/2_4?WSDL",
-      setup_client(api_version: '2_4').wsdl
-  end
-
   def test_endpoint
     assert_equal "https://123-ABC-456.mktoapi.com/soap/mktows/2_3",
       subject.endpoint
     assert_equal "https://testable.mktoapi.com/soap/mktows/2_4",
       setup_client(api_subdomain: 'testable', api_version: '2_4').endpoint
+  end
+
+  def test_wsdl
+    assert_equal "#{subject.endpoint}?WSDL", subject.wsdl
   end
 
   def test_generated_methods
